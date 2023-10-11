@@ -157,17 +157,16 @@
             let enemies = [];
 
             let x, y, xp, yp, xp_prev, yp_prev;
-            let find = false;
+
             for(let i = 0; i < Dots[enemy].length; i++){
                 let e_dot = Dots[enemy][i];
                 if(IsDotInCycle(e_dot[0], e_dot[1], cycle)){
-                    find = true;
-                    break;
+                    enemies.push([e_dot[0], e_dot[1]]);
                 }
             }
 
 
-            if(!find){
+            if(enemies.length == 0){
                 return;
             }
 
@@ -196,19 +195,21 @@
 
                 for(let j = minix; j <= maxix; j++){
                     if(IsDotInCycle(j, i, cycle) && isDot[j][i] != color ){
-
-                        if(isDot[i][j] == enemy){
-                            
-                            let index = Dots[enemy].indexOf([i, j]);
-                            if (index !== -1) {
-                                Dots[enemy].splice(index, 1);
-                            }
-                        }
-
                         isDot[j][i] = 'not available';
-                        
                     }
                 }
+            }
+            let find = true;
+            while(find && Dots[enemy].length > 0){
+                find = false;
+                for(let i = 0; i < Dots[enemy].length; i++){
+                    let xx = Dots[enemy][i][0], yy = Dots[enemy][i][1];
+                    if(isDot[xx][yy] == 'not available'){
+                        Dots[enemy].splice(i, 1);
+                        find = true;
+                        break;
+                    }
+                }  
             }
 
         }
